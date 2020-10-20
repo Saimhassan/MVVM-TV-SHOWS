@@ -1,8 +1,10 @@
-package saim.hassan.tvshows;
+package saim.hassan.tvshows.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import saim.hassan.tvshows.R;
 
 public class MainActivity extends AppCompatActivity {
 
