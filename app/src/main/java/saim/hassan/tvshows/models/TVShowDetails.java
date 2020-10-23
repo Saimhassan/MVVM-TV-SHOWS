@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class TVShowDetail {
+public class TVShowDetails {
     @SerializedName("url")
     private String url;
 
