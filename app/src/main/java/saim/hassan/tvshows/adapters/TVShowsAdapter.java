@@ -48,7 +48,7 @@ public class TVShowsAdapter extends RecyclerView.Adapter<TVShowsAdapter.TVShowVi
         return tvShows.size();
     }
 
-    static class TVShowViewHolder extends RecyclerView.ViewHolder{
+    class TVShowViewHolder extends RecyclerView.ViewHolder{
         private ItemContainerTvShowBinding itemContainerTvShowBinding;
         public TVShowViewHolder(ItemContainerTvShowBinding itemContainerTvShowBinding){
             super(itemContainerTvShowBinding.getRoot());
@@ -57,6 +57,7 @@ public class TVShowsAdapter extends RecyclerView.Adapter<TVShowsAdapter.TVShowVi
         public void bindTVShow(TVShow tvShow){
             itemContainerTvShowBinding.setTvShow(tvShow);
             itemContainerTvShowBinding.executePendingBindings();
+            itemContainerTvShowBinding.getRoot().setOnClickListener(v -> tvShowsListener.onTVShowClicked(tvShow));
         }
     }
 }
