@@ -12,15 +12,18 @@ import java.util.List;
 
 import saim.hassan.tvshows.R;
 import saim.hassan.tvshows.databinding.ItemContainerTvShowBinding;
+import saim.hassan.tvshows.listeners.TVShowsListener;
 import saim.hassan.tvshows.models.TVShow;
 
 public class TVShowsAdapter extends RecyclerView.Adapter<TVShowsAdapter.TVShowViewHolder>{
 
     private List<TVShow> tvShows;
     private LayoutInflater layoutInflater;
+    private TVShowsListener tvShowsListener;
 
-    public TVShowsAdapter(List<TVShow> tvShows) {
+    public TVShowsAdapter(List<TVShow> tvShows,TVShowsListener tvShowsListener) {
         this.tvShows = tvShows;
+        this.tvShowsListener = tvShowsListener;
     }
 
     @NonNull
