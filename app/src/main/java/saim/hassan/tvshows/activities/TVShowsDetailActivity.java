@@ -5,9 +5,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import saim.hassan.tvshows.R;
+import saim.hassan.tvshows.adapters.ImageSliderAdapter;
 import saim.hassan.tvshows.databinding.ActivityTVShowsDetailBinding;
 import saim.hassan.tvshows.viewmodels.TvShowDetailsViewModel;
 
@@ -32,8 +34,20 @@ public class TVShowsDetailActivity extends AppCompatActivity {
         tvShowDetailsViewModel.getTVShowDetails(tvShowId).observe(
                 this,tvShowDetailResponse -> {
                     activityTVShowsDetailBinding.setIsLoading(false);
-                    Toast.makeText(getApplicationContext(),tvShowDetailResponse.getTvShowDetail().getUrl(),Toast.LENGTH_SHORT).show();
+                    if (tvShowDetailResponse.getTvShowDetail() != null){
+                        if (tvShowDetailResponse.getTvShowDetail().getPictures() != null){
+                             loadImageSlider(tvShowDetailResponse.getTvShowDetail().getPictures());
+                        }
+                    }
                 }
         );
     }
+    private void loadImageSlider(String[] sliderImages){
+        activityTVShowsDetailBinding.sliderViewPager.setOffscreenPageLimit(1);
+        activityTVShowsDetailBinding.sliderViewPager.setAdapter(new ImageSliderAdapter(sliderImages));
+        activityTVShowsDetailBinding.sliderViewPager.setVisibility(View.VISIBLE);
+        activityTVShowsDetailBinding.viewFadingEdge.setVisibility(View.VISIBLE);
+    }
+
+    
 }
