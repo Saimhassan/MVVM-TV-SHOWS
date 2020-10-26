@@ -13,10 +13,10 @@ import saim.hassan.tvshows.databinding.ItemConatinerSliderImageBinding;
 
 public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.ImageSliderViewHolder>{
 
-    private String sliderImages;
+    private String[] sliderImages;
     private LayoutInflater layoutInflater;
 
-    public ImageSliderAdapter(String sliderImages) {
+    public ImageSliderAdapter(String[] sliderImages) {
         this.sliderImages = sliderImages;
     }
 
@@ -30,17 +30,17 @@ public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.
         ItemConatinerSliderImageBinding sliderImageBinding = DataBindingUtil.inflate(
                 layoutInflater, R.layout.item_conatiner_slider_image,parent,false
         );
-        return null;
+        return new ImageSliderViewHolder(sliderImageBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ImageSliderViewHolder holder, int position) {
-
+        holder.bindSliderImage(sliderImages[position]);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return sliderImages.length;
     }
 
     static class ImageSliderViewHolder extends RecyclerView.ViewHolder {
