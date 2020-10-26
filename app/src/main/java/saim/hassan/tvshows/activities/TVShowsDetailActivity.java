@@ -4,13 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import saim.hassan.tvshows.R;
 import saim.hassan.tvshows.adapters.ImageSliderAdapter;
@@ -52,6 +52,13 @@ public class TVShowsDetailActivity extends AppCompatActivity {
         activityTVShowsDetailBinding.sliderViewPager.setVisibility(View.VISIBLE);
         activityTVShowsDetailBinding.viewFadingEdge.setVisibility(View.VISIBLE);
         setupSliderIndicator(sliderImages.length);
+        activityTVShowsDetailBinding.sliderViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                setCurrentSliderIndicator(position);
+            }
+        });
     }
 
     private void setupSliderIndicator(int count){
@@ -70,6 +77,21 @@ public class TVShowsDetailActivity extends AppCompatActivity {
             activityTVShowsDetailBinding.layoutSliderIndicator.addView(indicators[i]);
         }
         activityTVShowsDetailBinding.layoutSliderIndicator.setVisibility(View.VISIBLE);
+        setCurrentSliderIndicator(0);
 
+    }
+
+    private void setCurrentSliderIndicator(int position){
+        int childCount = activityTVShowsDetailBinding.layoutSliderIndicator.getChildCount();
+        for (int i=0;i<childCount;i++){
+            ImageView imageView = (ImageView)activityTVShowsDetailBinding.layoutSliderIndicator.getChildAt(i);
+            if (i == position){
+                imageView.setImageDrawable(
+                        ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_slider_indicator_active)
+                );
+            }else {
+                imageView.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_slider_indicator_inactive));
+            }
+        }
     }
 }
