@@ -43,6 +43,10 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                         if (tvShowDetailResponse.getTvShowDetail().getPictures() != null){
                              loadImageSlider(tvShowDetailResponse.getTvShowDetail().getPictures());
                         }
+                        activityTVShowsDetailBinding.setTvShowImageURL(
+                                tvShowDetailResponse.getTvShowDetail().getImagePath()
+                        );
+                        activityTVShowsDetailBinding.imageTVShow.setVisibility(View.VISIBLE);
                     }
                 }
         );
