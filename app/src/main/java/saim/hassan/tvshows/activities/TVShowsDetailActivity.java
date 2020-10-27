@@ -71,7 +71,6 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                                 activityTVShowsDetailBinding.textDescription.setMaxLines(4);
                                 activityTVShowsDetailBinding.textDescription.setEllipsize(TextUtils.TruncateAt.END);
                                 activityTVShowsDetailBinding.textReadMore.setText(R.string.read_more);
-
                             }
                         });
                         activityTVShowsDetailBinding.setRating(
@@ -87,7 +86,7 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                         }else {
                             activityTVShowsDetailBinding.setGenre("N/A");
                         }
-                        activityTVShowsDetailBinding.setRuntime(tvShowDetailResponse.getTvShowDetail().getRuntime()+ "Min");
+                        activityTVShowsDetailBinding.setRuntime(tvShowDetailResponse.getTvShowDetail().getRuntime()+ " Min");
                         activityTVShowsDetailBinding.viewDivider1.setVisibility(View.VISIBLE);
                         activityTVShowsDetailBinding.layoutMisc.setVisibility(View.VISIBLE);
                         activityTVShowsDetailBinding.viewDivider2.setVisibility(View.VISIBLE);
