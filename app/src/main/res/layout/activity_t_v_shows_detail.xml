@@ -130,6 +130,42 @@
             app:layout_constraintEnd_toEndOf="@id/textName"
             app:layout_constraintStart_toStartOf="@id/textName"
             app:layout_constraintTop_toBottomOf="@id/textName"/>
+        
+        <TextView
+            android:id="@+id/textStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:ellipsize="end"
+            android:fontFamily="@font/ubuntu_regular"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@{status}"
+            android:textColor="@android:color/holo_green_light"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/textName"
+            app:layout_constraintStart_toStartOf="@id/textName"
+            app:layout_constraintTop_toBottomOf="@id/textNetworkCountry" />
+        
+        <TextView
+            android:id="@+id/textStarted"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:ellipsize="end"
+            android:fontFamily="@font/ubuntu_regular"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text='@{"Started on: "+startedDate}'
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/textName"
+            app:layout_constraintStart_toStartOf="@id/textName"
+            app:layout_constraintTop_toBottomOf="@id/textStatus"/>
+
+
 
 
 
