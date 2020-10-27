@@ -7,7 +7,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -58,6 +60,18 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                         );
                         activityTVShowsDetailBinding.textDescription.setVisibility(View.VISIBLE);
                         activityTVShowsDetailBinding.textReadMore.setVisibility(View.VISIBLE);
+                        activityTVShowsDetailBinding.textReadMore.setOnClickListener(v -> {
+                            if (activityTVShowsDetailBinding.textReadMore.getText().toString().equals("Read More")){
+                                activityTVShowsDetailBinding.textDescription.setMaxLines(Integer.MAX_VALUE);
+                                activityTVShowsDetailBinding.textDescription.setEllipsize(null);
+                                activityTVShowsDetailBinding.textReadMore.setText(R.string.read_less);
+                            }else {
+                                activityTVShowsDetailBinding.textDescription.setMaxLines(4);
+                                activityTVShowsDetailBinding.textDescription.setEllipsize(TextUtils.TruncateAt.END);
+                                activityTVShowsDetailBinding.textReadMore.setText(R.string.read_more);
+
+                            }
+                        });
                         loadBasicTVShowsDetail();
                     }
                 }
