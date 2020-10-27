@@ -2,6 +2,7 @@ package saim.hassan.tvshows.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
@@ -47,6 +48,16 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                                 tvShowDetailResponse.getTvShowDetail().getImagePath()
                         );
                         activityTVShowsDetailBinding.imageTVShow.setVisibility(View.VISIBLE);
+                        activityTVShowsDetailBinding.setDescription(
+                                String.valueOf(
+                                        HtmlCompat.fromHtml(
+                                                tvShowDetailResponse.getTvShowDetail().getDescription(),
+                                                HtmlCompat.FROM_HTML_MODE_LEGACY
+                                        )
+                                )
+                        );
+                        activityTVShowsDetailBinding.textDescription.setVisibility(View.VISIBLE);
+                        activityTVShowsDetailBinding.textReadMore.setVisibility(View.VISIBLE);
                         loadBasicTVShowsDetail();
                     }
                 }
