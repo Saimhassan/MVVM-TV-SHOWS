@@ -30,6 +30,7 @@ public class TVShowsDetailActivity extends AppCompatActivity {
 
     private void doInitaialization(){
         tvShowDetailsViewModel = new ViewModelProvider(this).get(TvShowDetailsViewModel.class);
+        activityTVShowsDetailBinding.imageBack.setOnClickListener(v -> onBackPressed());
         getTVShowDetails();
     }
     private void getTVShowDetails(){
