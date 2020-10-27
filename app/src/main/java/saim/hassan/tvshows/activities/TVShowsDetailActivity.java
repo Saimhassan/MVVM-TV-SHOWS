@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.Locale;
+
 import saim.hassan.tvshows.R;
 import saim.hassan.tvshows.adapters.ImageSliderAdapter;
 import saim.hassan.tvshows.databinding.ActivityTVShowsDetailBinding;
@@ -72,6 +74,23 @@ public class TVShowsDetailActivity extends AppCompatActivity {
 
                             }
                         });
+                        activityTVShowsDetailBinding.setRating(
+                                String.format(
+                                        Locale.getDefault(),
+                                        "%.2f",
+                                        Double.parseDouble(tvShowDetailResponse.getTvShowDetail().getRating())
+
+                                )
+                        );
+                        if (tvShowDetailResponse.getTvShowDetail().getGenres() != null){
+                            activityTVShowsDetailBinding.setGenre(tvShowDetailResponse.getTvShowDetail().getGenres()[0]);
+                        }else {
+                            activityTVShowsDetailBinding.setGenre("N/A");
+                        }
+                        activityTVShowsDetailBinding.setRuntime(tvShowDetailResponse.getTvShowDetail().getRuntime()+ "Min");
+                        activityTVShowsDetailBinding.viewDivider1.setVisibility(View.VISIBLE);
+                        activityTVShowsDetailBinding.layoutMisc.setVisibility(View.VISIBLE);
+                        activityTVShowsDetailBinding.viewDivider2.setVisibility(View.VISIBLE);
                         loadBasicTVShowsDetail();
                     }
                 }
