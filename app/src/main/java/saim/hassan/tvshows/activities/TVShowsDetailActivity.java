@@ -16,16 +16,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.util.Locale;
 
 import saim.hassan.tvshows.R;
 import saim.hassan.tvshows.adapters.ImageSliderAdapter;
 import saim.hassan.tvshows.databinding.ActivityTVShowsDetailBinding;
+import saim.hassan.tvshows.databinding.LayoutEpisodeBottomSheetBinding;
 import saim.hassan.tvshows.viewmodels.TvShowDetailsViewModel;
 
 public class TVShowsDetailActivity extends AppCompatActivity {
     private ActivityTVShowsDetailBinding activityTVShowsDetailBinding;
     private TvShowDetailsViewModel tvShowDetailsViewModel;
+    private BottomSheetDialog episodesBottomSheetDialog;
+    private LayoutEpisodeBottomSheetBinding layoutEpisodeBottomSheetBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +103,12 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                         });
                         activityTVShowsDetailBinding.buttonWebsite.setVisibility(View.VISIBLE);
                         activityTVShowsDetailBinding.buttonEpisodes.setVisibility(View.VISIBLE);
+                        activityTVShowsDetailBinding.buttonEpisodes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                
+                            }
+                        });
                         loadBasicTVShowsDetail();
                     }
                 }
