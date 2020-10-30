@@ -1,12 +1,15 @@
 package saim.hassan.tvshows.adapters;
 
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import saim.hassan.tvshows.R;
 import saim.hassan.tvshows.databinding.ItemConatinerEpisodesBinding;
 import saim.hassan.tvshows.databinding.ItemContainerTvShowBinding;
 import saim.hassan.tvshows.models.Episode;
@@ -14,6 +17,7 @@ import saim.hassan.tvshows.models.Episode;
 public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.EpisodeViewHolder>{
 
     private List<Episode> episodes;
+    private LayoutInflater layoutInflater;
 
     public EpisodesAdapter(List<Episode> episodes) {
         this.episodes = episodes;
@@ -22,17 +26,23 @@ public class EpisodesAdapter extends RecyclerView.Adapter<EpisodesAdapter.Episod
     @NonNull
     @Override
     public EpisodeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        if (layoutInflater == null){
+            layoutInflater = LayoutInflater.from(parent.getContext());
+        }
+        ItemConatinerEpisodesBinding itemConatinerEpisodesBinding = DataBindingUtil.inflate(
+                layoutInflater, R.layout.item_conatiner_episodes,parent,false
+        );
+        return new EpisodeViewHolder(itemConatinerEpisodesBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull EpisodeViewHolder holder, int position) {
-
+       holder.bindEpisode(episodes.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return episodes.size();
     }
 
     static class EpisodeViewHolder extends RecyclerView.ViewHolder{
