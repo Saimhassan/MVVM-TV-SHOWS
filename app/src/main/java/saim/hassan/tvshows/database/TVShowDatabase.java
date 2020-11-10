@@ -23,7 +23,5 @@ public abstract class TVShowDatabase extends RoomDatabase {
         return tvShowDatabase;
     }
 
-    public static TVShowDao tvShowDao() {
-        return null;
-    }
+    public abstract TVShowDao tvShowDao();
 }

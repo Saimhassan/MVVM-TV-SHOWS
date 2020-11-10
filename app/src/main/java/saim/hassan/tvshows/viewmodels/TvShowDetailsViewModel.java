@@ -26,6 +26,6 @@ public class TvShowDetailsViewModel extends AndroidViewModel {
         return tvShowDetailRepository.getTvShowDetails(tvShowId);
     }
     public Completable addToWatchList(TVShow tvShow){
-        return TVShowDatabase.tvShowDao().addToWatchList(tvShow);
+        return tvShowDatabase.tvShowDao().addToWatchList(tvShow);
     }
 }
