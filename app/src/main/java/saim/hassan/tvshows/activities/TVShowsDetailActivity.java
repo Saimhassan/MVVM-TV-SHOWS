@@ -18,12 +18,16 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.Locale;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import saim.hassan.tvshows.R;
 import saim.hassan.tvshows.adapters.EpisodesAdapter;
 import saim.hassan.tvshows.adapters.ImageSliderAdapter;
@@ -42,25 +46,26 @@ public class TVShowsDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityTVShowsDetailBinding = DataBindingUtil.setContentView(this,R.layout.activity_t_v_shows_detail);
+        activityTVShowsDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_t_v_shows_detail);
         doInitaialization();
     }
 
-    private void doInitaialization(){
+    private void doInitaialization() {
         tvShowDetailsViewModel = new ViewModelProvider(this).get(TvShowDetailsViewModel.class);
         activityTVShowsDetailBinding.imageBack.setOnClickListener(v -> onBackPressed());
-        tvShow = (TVShow)getIntent().getSerializableExtra("tvShow");
+        tvShow = (TVShow) getIntent().getSerializableExtra("tvShow");
         getTVShowDetails();
     }
-    private void getTVShowDetails(){
+
+    private void getTVShowDetails() {
         activityTVShowsDetailBinding.setIsLoading(true);
         String tvShowId = String.valueOf(tvShow.getId());
         tvShowDetailsViewModel.getTVShowDetails(tvShowId).observe(
-                this,tvShowDetailResponse -> {
+                this, tvShowDetailResponse -> {
                     activityTVShowsDetailBinding.setIsLoading(false);
-                    if (tvShowDetailResponse.getTvShowDetail() != null){
-                        if (tvShowDetailResponse.getTvShowDetail().getPictures() != null){
-                             loadImageSlider(tvShowDetailResponse.getTvShowDetail().getPictures());
+                    if (tvShowDetailResponse.getTvShowDetail() != null) {
+                        if (tvShowDetailResponse.getTvShowDetail().getPictures() != null) {
+                            loadImageSlider(tvShowDetailResponse.getTvShowDetail().getPictures());
                         }
                         activityTVShowsDetailBinding.setTvShowImageURL(
                                 tvShowDetailResponse.getTvShowDetail().getImagePath()
@@ -77,11 +82,11 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                         activityTVShowsDetailBinding.textDescription.setVisibility(View.VISIBLE);
                         activityTVShowsDetailBinding.textReadMore.setVisibility(View.VISIBLE);
                         activityTVShowsDetailBinding.textReadMore.setOnClickListener(v -> {
-                            if (activityTVShowsDetailBinding.textReadMore.getText().toString().equals("Read More")){
+                            if (activityTVShowsDetailBinding.textReadMore.getText().toString().equals("Read More")) {
                                 activityTVShowsDetailBinding.textDescription.setMaxLines(Integer.MAX_VALUE);
                                 activityTVShowsDetailBinding.textDescription.setEllipsize(null);
                                 activityTVShowsDetailBinding.textReadMore.setText(R.string.read_less);
-                            }else {
+                            } else {
                                 activityTVShowsDetailBinding.textDescription.setMaxLines(4);
                                 activityTVShowsDetailBinding.textDescription.setEllipsize(TextUtils.TruncateAt.END);
                                 activityTVShowsDetailBinding.textReadMore.setText(R.string.read_more);
@@ -95,12 +100,12 @@ public class TVShowsDetailActivity extends AppCompatActivity {
 
                                 )
                         );
-                        if (tvShowDetailResponse.getTvShowDetail().getGenres() != null){
+                        if (tvShowDetailResponse.getTvShowDetail().getGenres() != null) {
                             activityTVShowsDetailBinding.setGenre(tvShowDetailResponse.getTvShowDetail().getGenres()[0]);
-                        }else {
+                        } else {
                             activityTVShowsDetailBinding.setGenre("N/A");
                         }
-                        activityTVShowsDetailBinding.setRuntime(tvShowDetailResponse.getTvShowDetail().getRuntime()+ " Min");
+                        activityTVShowsDetailBinding.setRuntime(tvShowDetailResponse.getTvShowDetail().getRuntime() + " Min");
                         activityTVShowsDetailBinding.viewDivider1.setVisibility(View.VISIBLE);
                         activityTVShowsDetailBinding.layoutMisc.setVisibility(View.VISIBLE);
                         activityTVShowsDetailBinding.viewDivider2.setVisibility(View.VISIBLE);
@@ -114,7 +119,7 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                         activityTVShowsDetailBinding.buttonEpisodes.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if (episodesBottomSheetDialog == null){
+                                if (episodesBottomSheetDialog == null) {
                                     episodesBottomSheetDialog = new BottomSheetDialog(TVShowsDetailActivity.this);
                                     layoutEpisodeBottomSheetBinding = DataBindingUtil.inflate(
                                             LayoutInflater.from(TVShowsDetailActivity.this),
@@ -127,7 +132,7 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                                             new EpisodesAdapter(tvShowDetailResponse.getTvShowDetail().getEpisodes())
                                     );
                                     layoutEpisodeBottomSheetBinding.textTitle.setText(
-                                            String.format("Episodes | %s",tvShow.getName())
+                                            String.format("Episodes | %s", tvShow.getName())
                                     );
                                     layoutEpisodeBottomSheetBinding.imageClose.setOnClickListener(v1 -> episodesBottomSheetDialog.dismiss());
                                 }
@@ -135,7 +140,7 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                                 FrameLayout frameLayout = episodesBottomSheetDialog.findViewById(
                                         com.google.android.material.R.id.design_bottom_sheet
                                 );
-                                if (frameLayout != null){
+                                if (frameLayout != null) {
                                     BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(frameLayout);
                                     bottomSheetBehavior.setPeekHeight(Resources.getSystem().getDisplayMetrics().heightPixels);
                                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -143,12 +148,22 @@ public class TVShowsDetailActivity extends AppCompatActivity {
                                 episodesBottomSheetDialog.show();
                             }
                         });
+                        activityTVShowsDetailBinding.imageWatchList.setOnClickListener(v ->
+                                new CompositeDisposable().add(tvShowDetailsViewModel.addToWatchList(tvShow)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(() -> {
+                                    activityTVShowsDetailBinding.imageWatchList.setImageResource(R.drawable.ic_round_check_24);
+                                    Toast.makeText(getApplicationContext(), "Added to watchlist", Toast.LENGTH_SHORT).show();
+                                })));
+                        activityTVShowsDetailBinding.imageWatchList.setVisibility(View.VISIBLE);
                         loadBasicTVShowsDetail();
                     }
                 }
         );
     }
-    private void loadImageSlider(String[] sliderImages){
+
+    private void loadImageSlider(String[] sliderImages) {
         activityTVShowsDetailBinding.sliderViewPager.setOffscreenPageLimit(1);
         activityTVShowsDetailBinding.sliderViewPager.setAdapter(new ImageSliderAdapter(sliderImages));
         activityTVShowsDetailBinding.sliderViewPager.setVisibility(View.VISIBLE);
@@ -163,13 +178,13 @@ public class TVShowsDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setupSliderIndicator(int count){
+    private void setupSliderIndicator(int count) {
         ImageView[] indicators = new ImageView[count];
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         );
-        layoutParams.setMargins(8,0,8,0);
-        for (int i = 0; i<indicators.length;i++){
+        layoutParams.setMargins(8, 0, 8, 0);
+        for (int i = 0; i < indicators.length; i++) {
             indicators[i] = new ImageView(getApplicationContext());
             indicators[i].setImageDrawable(ContextCompat.getDrawable(
                     getApplicationContext(),
@@ -183,21 +198,21 @@ public class TVShowsDetailActivity extends AppCompatActivity {
 
     }
 
-    private void setCurrentSliderIndicator(int position){
+    private void setCurrentSliderIndicator(int position) {
         int childCount = activityTVShowsDetailBinding.layoutSliderIndicator.getChildCount();
-        for (int i=0;i<childCount;i++){
-            ImageView imageView = (ImageView)activityTVShowsDetailBinding.layoutSliderIndicator.getChildAt(i);
-            if (i == position){
+        for (int i = 0; i < childCount; i++) {
+            ImageView imageView = (ImageView) activityTVShowsDetailBinding.layoutSliderIndicator.getChildAt(i);
+            if (i == position) {
                 imageView.setImageDrawable(
-                        ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_slider_indicator_active)
+                        ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_slider_indicator_active)
                 );
-            }else {
-                imageView.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.background_slider_indicator_inactive));
+            } else {
+                imageView.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.background_slider_indicator_inactive));
             }
         }
     }
 
-    private void loadBasicTVShowsDetail(){
+    private void loadBasicTVShowsDetail() {
         activityTVShowsDetailBinding.setTvShowName(tvShow.getName());
         activityTVShowsDetailBinding.setNetworkCountry(
                 tvShow.getNetwork() + " (" + tvShow.getCountry() + ")"
