@@ -109,6 +109,7 @@
             android:layout_height="@dimen/_22sdp"
             android:layout_marginBottom="@dimen/_8sdp"
             android:contentDescription="@string/app_name"
+            android:visibility="gone"
             android:src="@drawable/ic_baseline_delete_forever_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
