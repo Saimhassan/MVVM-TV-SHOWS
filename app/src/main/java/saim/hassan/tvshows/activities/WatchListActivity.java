@@ -4,13 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -65,7 +63,9 @@ public class WatchListActivity extends AppCompatActivity implements WatchlistLis
 
     @Override
     public void onTVShowClicked(TVShow tvShow) {
-
+        Intent intent = new Intent(getApplicationContext(),TVShowsDetailActivity.class);
+        intent.putExtra("tvShow",tvShow);
+        startActivity(intent);
     }
 
     @Override
