@@ -5,20 +5,28 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import saim.hassan.tvshows.R;
+import saim.hassan.tvshows.adapters.WatchListAdapter;
 import saim.hassan.tvshows.databinding.ActivityWatchListBinding;
+import saim.hassan.tvshows.listeners.WatchlistListener;
+import saim.hassan.tvshows.models.TVShow;
 import saim.hassan.tvshows.viewmodels.WatchListViewModel;
 
-public class WatchListActivity extends AppCompatActivity {
+public class WatchListActivity extends AppCompatActivity implements WatchlistListener {
 
     private ActivityWatchListBinding activityWatchListBinding;
     private WatchListViewModel viewModel;
-
+    private WatchListAdapter watchListAdapter;
+    private List<TVShow> watchList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +36,7 @@ public class WatchListActivity extends AppCompatActivity {
     private void doInitalization(){
       viewModel = new ViewModelProvider(this).get(WatchListViewModel.class);
       activityWatchListBinding.imageBack.setOnClickListener(v -> onBackPressed());
+      watchList = new ArrayList<>();
     }
 
     private void loadWatchList(){
@@ -37,7 +46,14 @@ public class WatchListActivity extends AppCompatActivity {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(tvShows -> {
             activityWatchListBinding.setIsLoading(false);
-            Toast.makeText(getApplicationContext(), "Watchlist "+tvShows.size(), Toast.LENGTH_SHORT).show();
+            if (watchList.size() > 0){
+                watchList.clear();
+            }
+            watchList.addAll(tvShows);
+            watchListAdapter = new WatchListAdapter(watchList,this);
+            activityWatchListBinding.watchListRecyclerView.setAdapter(watchListAdapter);
+            activityWatchListBinding.watchListRecyclerView.setVisibility(View.VISIBLE);
+            compositeDisposable.dispose();
         }));
     }
 
@@ -45,5 +61,15 @@ public class WatchListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadWatchList();
+    }
+
+    @Override
+    public void onTVShowClicked(TVShow tvShow) {
+
+    }
+
+    @Override
+    public void removeTVShowFromWatchList(TVShow tvShow, int position) {
+
     }
 }
