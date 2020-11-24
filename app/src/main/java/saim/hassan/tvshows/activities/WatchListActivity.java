@@ -17,6 +17,7 @@ import saim.hassan.tvshows.adapters.WatchListAdapter;
 import saim.hassan.tvshows.databinding.ActivityWatchListBinding;
 import saim.hassan.tvshows.listeners.WatchlistListener;
 import saim.hassan.tvshows.models.TVShow;
+import saim.hassan.tvshows.utilities.TempDataHolder;
 import saim.hassan.tvshows.viewmodels.WatchListViewModel;
 
 public class WatchListActivity extends AppCompatActivity implements WatchlistListener {
@@ -35,6 +36,7 @@ public class WatchListActivity extends AppCompatActivity implements WatchlistLis
       viewModel = new ViewModelProvider(this).get(WatchListViewModel.class);
       activityWatchListBinding.imageBack.setOnClickListener(v -> onBackPressed());
       watchList = new ArrayList<>();
+      loadWatchList();
     }
 
     private void loadWatchList(){
@@ -58,7 +60,11 @@ public class WatchListActivity extends AppCompatActivity implements WatchlistLis
     @Override
     protected void onResume() {
         super.onResume();
-        loadWatchList();
+        if (TempDataHolder.IS_WATCHLIST_UPDATED){
+            loadWatchList();
+            TempDataHolder.IS_WATCHLIST_UPDATED = false;
+        }
+
     }
 
     @Override
