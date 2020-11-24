@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import saim.hassan.tvshows.database.TVShowDatabase;
 import saim.hassan.tvshows.models.TVShow;
 import saim.hassan.tvshows.repositories.TVShowDetailRepository;
@@ -27,5 +28,12 @@ public class TvShowDetailsViewModel extends AndroidViewModel {
     }
     public Completable addToWatchList(TVShow tvShow){
         return tvShowDatabase.tvShowDao().addToWatchList(tvShow);
+    }
+    public Flowable<TVShow> getTVSHowFromWatchList(String tvShowId){
+        return tvShowDatabase.tvShowDao().getTVShowFromWatchList(tvShowId);
+    }
+
+    public Completable removeTVShowFromWatchList(TVShow tvShow){
+        return tvShowDatabase.tvShowDao().removeFromWatchList(tvShow);
     }
 }
